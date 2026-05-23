@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Order Management</title>
+    <style>
+        /* Base Reset and Styling */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f9;
+            color: #333;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+        }
+
+        /* Form Styling */
+        .order-form-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+
+        .order-form-card h2 {
+            margin-bottom: 20px;
+            color: #34495e;
+            font-size: 1.25rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+        }
+
+        .form-group input, .form-group select {
+            padding: 10px;
+            border: 1px solid #ccd1d9;
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            border-color: #3498db;
+        }
+
+        .submit-btn {
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #27ae60;
+        }
+
+        /* Table Dashboard Styling */
+        .dashboard-card {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .dashboard-card h2 {
+            margin-bottom: 20px;
+            color: #34495e;
+            font-size: 1.25rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        /* Status Badges */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .badge.pending {
+            background-color: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge.completed {
+            background-color: #d1fae5;
+            color: #059669;
+        }
+
+        /* Action Buttons */
+        .actions-cell {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: opacity 0.2s;
+        }
+
+        .action-btn:hover {
+            opacity: 0.8;
+        }
+
+        .toggle-btn {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #e74c3c;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Order Management System</h1>
+    </header>
+
+    <div class="order-form-card">
+        <h2>Create New Order</h2>
+        <form id="orderForm">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="customerName">Customer Name</label>
+                    <input type="text" id="customerName" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="itemDescription">Item / Service</label>
+                    <input type="text" id="itemDescription" placeholder="Widget A" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" min="1" value="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="status">Initial Status</label>
+                    <select id="status">
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Add Order</button>
+        </form>
+    </div>
+
+    <div class="dashboard-card">
+        <h2>All Orders</h2>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Item</th>
+                        <th>Qty</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="orderTableBody">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    // --- Application Logic & State ---
+    
+    // Retrieve stored orders from localStorage, or initialize an empty array if none exist
+    let orders = JSON.parse(localStorage.getItem('businessOrders')) || [];
+
+    const orderForm = document.getElementById('orderForm');
+    const orderTableBody = document.getElementById('orderTableBody');
+
+    // Function to save current state to browser local storage
+    function saveToStorage() {
+        localStorage.setItem('businessOrders', JSON.stringify(orders));
+    }
+
+    // Function to render orders list into the HTML Table
+    function renderOrders() {
+        // Clear old rows first
+        orderTableBody.innerHTML = '';
+
+        if (orders.length === 0) {
+            orderTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8;">No orders available. Add one above!</td></tr>`;
+            return;
+        }
+
+        // Loop through each order structure and create a matching row
+        orders.forEach((order, index) => {
+            const row = document.createElement('tr');
+
+            // Set up badge color conditional logic
+            const statusClass = order.status.toLowerCase() === 'completed' ? 'completed' : 'pending';
+
+            row.innerHTML = `
+                <td>#${1001 + index}</td>
+                <td><strong>${escapeHtml(order.customer)}</strong></td>
+                <td>${escapeHtml(order.item)}</td>
+                <td>${order.qty}</td>
+                <td><span class="badge ${statusClass}">${order.status}</span></td>
+                <td class="actions-cell">
+                    <button class="action-btn toggle-btn" onclick="toggleStatus(${index})">Change Status</button>
+                    <button class="action-btn delete-btn" onclick="deleteOrder(${index})">Delete</button>
+                </td>
+            `;
+            orderTableBody.appendChild(row);
+        });
+    }
+
+    // Event Handler: Form Submission to Add a New Order
+    orderForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop standard page reload browser behavior
+
+        const newOrder = {
+            customer: document.getElementById('customerName').value,
+            item: document.getElementById('itemDescription').value,
+            qty: parseInt(document.getElementById('quantity').value),
+            status: document.getElementById('status').value
+        };
+
+        orders.push(newOrder); // Add item to array
+        saveToStorage();       // Save change
+        renderOrders();        // Refresh UI Display
+        orderForm.reset();     // Clear input fields for next entry
+    });
+
+    // Action: Toggle an order status between Pending & Completed
+    window.toggleStatus = function(index) {
+        orders[index].status = orders[index].status === 'Pending' ? 'Completed' : 'Pending';
+        saveToStorage();
+        renderOrders();
+    };
+
+    // Action: Delete an entire order row
+    window.deleteOrder = function(index) {
+        orders.splice(index, 1); // Remove item from index array
+        saveToStorage();
+        renderOrders();
+    };
+
+    // Helper Utility: Secure text conversion to prevent basic script injections
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    // Initial App Render Run on window startup load
+    renderOrders();
+</script>
+
+</body>
+</html>
