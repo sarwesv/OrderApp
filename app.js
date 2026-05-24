@@ -11,6 +11,11 @@ function saveToStorage() {
     localStorage.setItem('businessOrders', JSON.stringify(orders));
 }
 
+// Helper Utility: Generate a random 6-character alphanumeric ID
+function generateRandomId() {
+    return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
 function renderOrders() {
     orderTableBody.innerHTML = '';
 
@@ -31,8 +36,11 @@ function renderOrders() {
 
         const statusClass = order.status.toLowerCase() === 'completed' ? 'completed' : 'pending';
 
+        // Use the stored ID or fallback to sequential if it's an old record
+        const displayId = order.id || (1001 + index);
+
         row.innerHTML = `
-            <td>#${1001 + index}</td>
+            <td>#${displayId}</td>
             <td><strong>${escapeHtml(order.customer)}</strong></td>
             <td>${escapeHtml(order.item)}</td>
             <td>${order.qty}</td>
@@ -54,6 +62,7 @@ orderForm.addEventListener('submit', function(e) {
     e.preventDefault();
 
     const newOrder = {
+        id: generateRandomId(),
         customer: document.getElementById('customerName').value,
         item: document.getElementById('itemDescription').value,
         qty: parseInt(document.getElementById('quantity').value),
