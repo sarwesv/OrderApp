@@ -6,6 +6,7 @@ let orders = JSON.parse(localStorage.getItem('businessOrders')) || [];
 // UI State for Filtering and Sorting
 let filterText = '';
 let filterStatus = 'All';
+let filterItem = 'All';
 let sortConfig = { key: null, direction: 'asc' }; // direction: 'asc' or 'desc'
 let recentlyUpdatedIndex = null;
 
@@ -13,6 +14,8 @@ const orderForm = document.getElementById('orderForm');
 const orderTableBody = document.getElementById('orderTableBody');
 const searchInput = document.getElementById('searchInput');
 const filterStatusSelect = document.getElementById('filterStatus');
+const filterItemSelect = document.getElementById('filterItem');
+const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 const tableHeaders = document.querySelectorAll('#orderTable th[data-sort]');
 
 // Modal Elements
@@ -35,8 +38,33 @@ function generateRandomId() {
     return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
+// Update the Item Filter dropdown with unique items from current orders
+function updateItemDropdown() {
+    const currentSelection = filterItem;
+    const uniqueItems = [...new Set(orders.map(o => o.item))].sort();
+    
+    // Clear and reset
+    filterItemSelect.innerHTML = '<option value="All">All Items</option>';
+    
+    uniqueItems.forEach(item => {
+        const option = document.createElement('option');
+        option.value = item;
+        option.textContent = item;
+        filterItemSelect.appendChild(option);
+    });
+
+    // Restore selection if it still exists
+    if (uniqueItems.includes(currentSelection)) {
+        filterItemSelect.value = currentSelection;
+    } else {
+        filterItem = 'All';
+    }
+}
+
 // Function to render orders list into the HTML Table with Filtering and Sorting
 function renderOrders() {
+    updateItemDropdown();
+
     // 1. Filter the orders
     let processedOrders = orders.map((order, originalIndex) => ({ ...order, originalIndex }));
 
@@ -51,6 +79,10 @@ function renderOrders() {
 
     if (filterStatus !== 'All') {
         processedOrders = processedOrders.filter(order => order.status === filterStatus);
+    }
+
+    if (filterItem !== 'All') {
+        processedOrders = processedOrders.filter(order => order.item === filterItem);
     }
 
     // 2. Sort the orders
@@ -148,6 +180,23 @@ searchInput.addEventListener('input', (e) => {
 
 filterStatusSelect.addEventListener('change', (e) => {
     filterStatus = e.target.value;
+    renderOrders();
+});
+
+filterItemSelect.addEventListener('change', (e) => {
+    filterItem = e.target.value;
+    renderOrders();
+});
+
+resetFiltersBtn.addEventListener('click', () => {
+    filterText = '';
+    filterStatus = 'All';
+    filterItem = 'All';
+    
+    searchInput.value = '';
+    filterStatusSelect.value = 'All';
+    filterItemSelect.value = 'All';
+    
     renderOrders();
 });
 
