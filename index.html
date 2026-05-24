@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Business Order Management</title>
+    <title>Smart Order Manager</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📦</text></svg>">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -11,7 +11,7 @@
 
 <div class="container">
     <header>
-        <h1>Order Management System</h1>
+        <h1>Smart Order Manager</h1>
     </header>
 
     <div class="order-form-card">
@@ -43,16 +43,38 @@
     </div>
 
     <div class="dashboard-card">
-        <h2>All Orders</h2>
+        <div class="dashboard-header">
+            <h2>All Orders</h2>
+            <div class="header-actions">
+                <button id="exportBtn" class="action-btn toggle-btn">Export Data</button>
+                <button id="importBtn" class="action-btn toggle-btn">Import Data</button>
+                <input type="file" id="importInput" style="display: none;" accept=".json">
+            </div>
+        </div>
+
+        <!-- Search and Filter Controls -->
+        <div class="filter-controls">
+            <div class="form-group">
+                <input type="text" id="searchInput" placeholder="Search customer or item...">
+            </div>
+            <div class="form-group">
+                <select id="filterStatus">
+                    <option value="All">All Statuses</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+        </div>
+
         <div style="overflow-x: auto;">
-            <table>
+            <table id="orderTable">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Customer</th>
-                        <th>Item</th>
-                        <th>Qty</th>
-                        <th>Status</th>
+                        <th data-sort="id">ID <span class="sort-icon"></span></th>
+                        <th data-sort="customer">Customer <span class="sort-icon"></span></th>
+                        <th data-sort="item">Item <span class="sort-icon"></span></th>
+                        <th data-sort="qty">Qty <span class="sort-icon"></span></th>
+                        <th data-sort="status">Status <span class="sort-icon"></span></th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -60,6 +82,41 @@
                     </tbody>
             </table>
         </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Edit Order</h2>
+            <span class="close-btn">&times;</span>
+        </div>
+        <form id="editForm">
+            <input type="hidden" id="editIndex">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="editCustomerName">Customer Name</label>
+                    <input type="text" id="editCustomerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editItemDescription">Item / Service</label>
+                    <input type="text" id="editItemDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="editQuantity">Quantity</label>
+                    <input type="number" id="editQuantity" min="1" required>
+                </div>
+                <div class="form-group">
+                    <label for="editStatus">Status</label>
+                    <select id="editStatus">
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="submit-btn" style="margin-top: 15px;">Save Changes</button>
+        </form>
     </div>
 </div>
 
