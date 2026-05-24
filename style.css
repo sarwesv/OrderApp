@@ -64,7 +64,7 @@ header h1 {
 .form-group input, .form-group select {
     padding: 10px;
     border: 1px solid #ccd1d9;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 1rem;
     outline: none;
     transition: border-color 0.2s ease, transform 0.2s ease;
@@ -83,7 +83,7 @@ header h1 {
     padding: 12px 20px;
     font-size: 1rem;
     font-weight: bold;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     width: 100%;
     transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
@@ -104,7 +104,7 @@ header h1 {
 .dashboard-card {
     background: #ffffff;
     padding: 25px;
-    border-radius: 8px;
+    border-radius: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
@@ -114,7 +114,7 @@ header h1 {
     align-items: center;
     margin-bottom: 20px;
     flex-wrap: wrap;
-    gap: 15px;
+    gap: 10px;
 }
 
 .dashboard-card h2 {
@@ -124,23 +124,30 @@ header h1 {
 
 .header-actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
+}
+
+/* Compact header buttons */
+.header-actions .action-btn {
+    padding: 8px 14px;
+    font-size: 0.85rem;
 }
 
 /* Filter Controls Styling */
 .filter-controls {
     display: flex;
-    gap: 15px;
+    gap: 12px;
     margin-bottom: 20px;
     background: #f8fafc;
-    padding: 15px;
-    border-radius: 6px;
+    padding: 12px;
+    border-radius: 10px;
     flex-wrap: wrap;
+    align-items: flex-end;
 }
 
 .filter-controls .form-group {
     flex: 1;
-    min-width: 200px;
+    min-width: 150px;
 }
 
 table {
@@ -150,7 +157,7 @@ table {
 }
 
 th, td {
-    padding: 12px 15px;
+    padding: 10px 12px;
     border-bottom: 1px solid #e2e8f0;
 }
 
@@ -159,7 +166,7 @@ th {
     color: #64748b;
     font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     cursor: pointer;
     user-select: none;
     position: relative;
@@ -237,8 +244,8 @@ tr.order-row.flash-update {
 /* Status Badges */
 .badge {
     padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 0.85rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
     font-weight: bold;
     display: inline-block;
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -262,15 +269,15 @@ tr.order-row:hover .badge {
 /* Action Buttons */
 .actions-cell {
     display: flex;
-    gap: 10px;
+    gap: 6px;
 }
 
 .action-btn {
-    padding: 6px 12px;
+    padding: 6px 10px;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
